@@ -1,0 +1,246 @@
+openapi: 3.0.0
+info:
+  title: New Pacific Island Campsite API
+  description: An API, that exposes the endpoints for availabilites and reservations of the campsite on the newest pacific island.
+  version: 3.0.16
+servers:
+  - url: http://localhost:8080/campsite/v1
+    description: Local server description
+  - url: http://campsite-prod.com
+    description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /availabilities:
+    get:
+      summary: Returns a list of availabilities.
+      description: This list is a list of all availabilities of the campsite within the date range.
+      operationId: getAvailabilities
+      responses:
+        '200':    # status code
+          description: A JSON array of reservations
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+        '400':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+                  
+
+  /reservations:
+    get:
+      summary: Returns reservations.
+      description: Returns reservation.
+      operationId: getReservations
+      responses:
+        '200':
+          description: Creation succesfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+                
+        '404':    # status code
+          description: Reservations not found
+                
+        '400':    # status code
+          description: Bad Request
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        
+        '500':    # status code
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+                
+    post:
+      summary: Creates a reservation.
+      operationId: saveReservation
+      requestBody:
+        description: Creates a reservation.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservation'
+      responses:
+        '201':
+          description: Creation succesfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+                
+        '400':    # status code
+          description: Bad Request
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        
+        '500':    # status code
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+
+  /reservations/{id}:
+    get:
+      summary: Returns a reservation.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: getReservation
+      parameters: 
+        - name: id
+          in: path
+          description: Reservation Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':    # status code
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+                
+        '404':    # status code
+          description: Reservation not found
+                
+        '400':    # status code
+          description: Bad Request
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        
+        '500':    # status code
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+                
+    delete:
+      summary: Cancels a reservation.
+      description: Cancels (Deletes) a reservation.
+      operationId: deleteReservation
+      parameters: 
+        - name: id
+          in: path
+          description: Reservation Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+                
+        '404':    # status code
+          description: Reservation not found
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+                
+        '400':    # status code
+          description: Bad Request
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        
+        '500':    # status code
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+  
+    patch:
+      summary: Modifies a reservation.
+      description: Modifies a reservation.
+      operationId: modifyReservation
+      parameters: 
+        - name: id
+          in: path
+          description: Reservation Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Modification succesfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+                
+        '400':    # status code
+          description: Bad Request
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        
+        '500':    # status code
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+  
+components:
+  schemas:
+    Reservation:
+      type: object
+      properties:
+        id:
+          description: Reservation Id
+          type: integer
+          format: int64
+        fullname:
+          description: Client's full name
+          type: string
+        email:
+          description: Client's email address
+          type: string
+        arrivalDate:
+          description: Client's arrival date
+          type: string
+          format: date
+        departureDate:
+          description: Client's departure date
+          type: string
+          format: date
+      required:
+        - id
+        - fullname
+        - email
+        - arrivalDate
+        - departureDate
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+        
