@@ -46,11 +46,25 @@
 			</exclusions>
 		</dependency>
 
+		<!--SWAGGER-->
+
 		<!--swagger codegen to generate the resource classes-->
 		<dependency>
 			<groupId>io.swagger.codegen.v3</groupId>
 			<artifactId>swagger-codegen-maven-plugin</artifactId>
 			<version>3.0.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
 		</dependency>
 
 		<!--adding h2 database dependency-->
@@ -75,9 +89,9 @@
 			</plugin>
 			<plugin>
 				<!-- This 2019 version is required for OpenAPI 3 -->
-				<groupId>io.swagger.codegen.v3</groupId>
+				<groupId>io.swagger</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<version>3.0.8</version>
+				<version>2.3.1</version>
 				<executions>
 					<execution>
 						<goals>
@@ -90,7 +104,7 @@
 							<generateApiDocumentation>true</generateApiDocumentation>
 							<generateModels>true</generateModels>
 							<generateModelTests>false</generateModelTests>
-							<generateApis>false</generateApis>
+							<generateApis>true</generateApis>
 							<generateApiTests>false</generateApiTests>
 
 <!--							<apiPackage>${client.base.package.name}.api</apiPackage>-->

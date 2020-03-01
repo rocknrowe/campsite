@@ -1,58 +1,49 @@
-openapi: 3.0.0
+swagger: '2.0'
 info:
   title: New Pacific Island Campsite API
   description: An API, that exposes the endpoints for availabilites and reservations of the campsite on the newest pacific island.
-  version: 3.0.16
-servers:
-  - url: http://localhost:8080/campsite/v1
-    description: Local server description
-  - url: http://campsite-prod.com
-    description: Optional server description, e.g. Internal staging server for testing
+  version: '2.0'
+host: localhost:8080
+basePath: /
 paths:
   /availabilities:
     get:
       summary: Returns a list of availabilities.
       operationId: getAvailabilities
+
       description: This list is a list of all availabilities of the campsite within the date range.
       parameters:
         - name: startDate
           in: query
           description: Start date for searching reservations.
           required: true
-          schema:
-            type: string
-            format: date
-            example: "yyyy-MM-dd"
+          type: string
+          format: date
         - name: endDate
           in: query
           description: End date for searching reservations. If not provided 1 month since start date is used.
           required: false
-          schema:
-            type: string
-            format: date
-            example: "yyyy-MM-dd"
+          type: string
+          format: date
       responses:
         '200':    # status code
           description: A JSON array of availabilities
-          content:
-            application/json:
-              schema:
-                application/json:
-                $ref: '#/components/schemas/Availabilities'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Availabilities'
         '400':    # status code
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
         '404':
           description: No availabilities found.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
+          schema:
+            type: array
+            items:
+              type: string
 
 
   /reservations:
@@ -64,59 +55,48 @@ paths:
       responses:
         '200':
           description: Creation successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reservation'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Reservation'
 
         '404':
           description: Reservations not found
 
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
         '500':    # status code
           description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
     post:
       summary: Creates a reservation.
       operationId: saveReservation
-      requestBody:
-        description: Creates a reservation.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Reservation'
+      description: Creates a reservation.
+
       responses:
         '201':
           description: Creation succesfull
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reservation'
-
+          schema:
+            type: object
         '400':    # status code
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
         '500':    # status code
           description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
+
 
   /reservations/{id}:
     get:
@@ -128,33 +108,29 @@ paths:
           in: path
           description: Reservation Id
           required: true
-          schema:
-            type: integer
-            format: int64
+          type: string
       responses:
         '200':    # status code
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reservation'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Reservation'
 
         '404':    # status code
           description: Reservation not found
 
         '400':    # status code
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
         '500':    # status code
           description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
     delete:
       summary: Cancels a reservation.
@@ -165,33 +141,28 @@ paths:
           in: path
           description: Reservation Id
           required: true
-          schema:
-            type: integer
-            format: int64
+          type: string
       responses:
         '204':
           description: The resource was deleted successfully.
 
         '404':    # status code
           description: Reservation not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
         '400':    # status code
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
         '500':    # status code
           description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
     patch:
       summary: Modifies a reservation.
@@ -202,79 +173,72 @@ paths:
           in: path
           description: Reservation Id
           required: true
-          schema:
-            type: integer
-            format: int64
+          type: integer
       responses:
         '200':
           description: Modification succesfull
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reservation'
+          schema:
+            items:
+              $ref: '#/definitions/Reservation'
 
         '400':    # status code
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
         '500':    # status code
           description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
-components:
-  schemas:
-    Reservation:
-      type: object
-      properties:
-        id:
-          description: Reservation Id
-          type: integer
-          format: int64
-        fullname:
-          description: Client's full name
-          type: string
-        email:
-          description: Client's email address
-          type: string
-        arrivalDate:
-          description: Client's arrival date
-          type: string
-          format: date
-          example: yyyy-MM-dd
-        departureDate:
-          description: Client's departure date
-          type: string
-          format: date
-          example: yyyy-MM-dd
-      required:
-        - id
-        - fullname
-        - email
-        - arrivalDate
-        - departureDate
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      required:
-        - code
-        - message
-    Availabilities:
-      type: object
-      description: List of available dates
-      properties:
-        availableDate:
-          description: AvailableDate
-          type: string
-          format: date
-          example: yyyy-MM-dd
-        
+definitions:
+  Reservation:
+    type: object
+    properties:
+      id:
+        description: Reservation Id
+        type: integer
+        format: int64
+      fullname:
+        description: Client's full name
+        type: string
+      email:
+        description: Client's email address
+        type: string
+      arrivalDate:
+        description: Client's arrival date
+        type: string
+        format: date
+        example: yyyy-MM-dd
+      departureDate:
+        description: Client's departure date
+        type: string
+        format: date
+        example: yyyy-MM-dd
+    required:
+      - id
+      - fullname
+      - email
+      - arrivalDate
+      - departureDate
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    required:
+      - code
+      - message
+  Availabilities:
+    type: object
+    description: List of available dates
+    properties:
+      availableDate:
+        description: AvailableDate
+        type: string
+        format: date
+        example: yyyy-MM-dd
