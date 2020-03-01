@@ -12,57 +12,80 @@ paths:
   /availabilities:
     get:
       summary: Returns a list of availabilities.
-      description: This list is a list of all availabilities of the campsite within the date range.
       operationId: getAvailabilities
+      description: This list is a list of all availabilities of the campsite within the date range.
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for searching reservations.
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "yyyy-MM-dd"
+        - name: endDate
+          in: query
+          description: End date for searching reservations. If not provided 1 month since start date is used.
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "yyyy-MM-dd"
       responses:
         '200':    # status code
-          description: A JSON array of reservations
+          description: A JSON array of availabilities
           content:
             application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+              schema:
+                application/json:
+                $ref: '#/components/schemas/Availabilities'
         '400':    # status code
-          description: A JSON array of user names
+          description: Bad Request
           content:
             application/json:
-              schema: 
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No availabilities found.
+          content:
+            application/json:
+              schema:
                 type: array
-                items: 
+                items:
                   type: string
-                  
+
 
   /reservations:
     get:
       summary: Returns reservations.
       description: Returns reservation.
       operationId: getReservations
+
       responses:
         '200':
-          description: Creation succesfull
+          description: Creation successful
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reservation'
-                
-        '404':    # status code
+
+        '404':
           description: Reservations not found
-                
-        '400':    # status code
+
+        '400':
           description: Bad Request
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-        
+
         '500':    # status code
           description: Internal Server Error
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-                
+
     post:
       summary: Creates a reservation.
       operationId: saveReservation
@@ -80,19 +103,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reservation'
-                
+
         '400':    # status code
           description: Bad Request
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-        
+
         '500':    # status code
           description: Internal Server Error
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
 
   /reservations/{id}:
@@ -100,7 +123,7 @@ paths:
       summary: Returns a reservation.
       description: Optional extended description in CommonMark or HTML.
       operationId: getReservation
-      parameters: 
+      parameters:
         - name: id
           in: path
           description: Reservation Id
@@ -115,29 +138,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reservation'
-                
+
         '404':    # status code
           description: Reservation not found
-                
+
         '400':    # status code
           description: Bad Request
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-        
+
         '500':    # status code
           description: Internal Server Error
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-                
+
     delete:
       summary: Cancels a reservation.
       description: Cancels (Deletes) a reservation.
       operationId: deleteReservation
-      parameters: 
+      parameters:
         - name: id
           in: path
           description: Reservation Id
@@ -148,33 +171,33 @@ paths:
       responses:
         '204':
           description: The resource was deleted successfully.
-                
+
         '404':    # status code
           description: Reservation not found
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-                
+
         '400':    # status code
           description: Bad Request
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-        
+
         '500':    # status code
           description: Internal Server Error
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-  
+
     patch:
       summary: Modifies a reservation.
       description: Modifies a reservation.
       operationId: modifyReservation
-      parameters: 
+      parameters:
         - name: id
           in: path
           description: Reservation Id
@@ -189,21 +212,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reservation'
-                
+
         '400':    # status code
           description: Bad Request
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-        
+
         '500':    # status code
           description: Internal Server Error
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Error'
-  
+
 components:
   schemas:
     Reservation:
@@ -223,10 +246,12 @@ components:
           description: Client's arrival date
           type: string
           format: date
+          example: yyyy-MM-dd
         departureDate:
           description: Client's departure date
           type: string
           format: date
+          example: yyyy-MM-dd
       required:
         - id
         - fullname
@@ -243,4 +268,13 @@ components:
       required:
         - code
         - message
+    Availabilities:
+      type: object
+      description: List of available dates
+      properties:
+        availableDate:
+          description: AvailableDate
+          type: string
+          format: date
+          example: yyyy-MM-dd
         

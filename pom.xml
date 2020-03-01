@@ -23,6 +23,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.2.4.RELEASE</version>
 		</dependency>
 
 		<!--project lombok for auto generation boilerplate code-->
@@ -86,8 +87,14 @@
 							<inputSpec>${project.basedir}/src/main/resources/campsite.yaml</inputSpec>
 							<language>java</language>
 							<modelPackage>${client.base.package.name}.model</modelPackage>
-							<apiPackage>${client.base.package.name}.api</apiPackage>
-							<invokerPackage>${client.base.package.name}.invoker</invokerPackage>
+							<generateApiDocumentation>true</generateApiDocumentation>
+							<generateModels>true</generateModels>
+							<generateModelTests>false</generateModelTests>
+							<generateApis>false</generateApis>
+							<generateApiTests>false</generateApiTests>
+
+<!--							<apiPackage>${client.base.package.name}.api</apiPackage>-->
+<!--							<invokerPackage>${client.base.package.name}.invoker</invokerPackage>-->
 							<configOptions>
 								<groupId>${project.groupId}</groupId>
 								<artifactId>${project.artifactId}</artifactId>
