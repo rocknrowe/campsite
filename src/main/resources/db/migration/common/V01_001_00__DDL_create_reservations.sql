@@ -1,13 +1,10 @@
+CREATE TABLE IF NOT EXISTS reservation (
 
-
-CREATE TABLE IF NOT EXISTS `reservation` (
-
-    `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `first_name` varchar(20),
-    `last_name` varchar(20),
-    `email` varchar(50),
-    `start_date` date,
-    `end_date` date,
-    `creation_time` timestamp,
-    `update_time` timestamp
-)ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+    id SERIAL PRIMARY KEY NOT NULL,
+    user_name varchar(50) NOT NULL,
+    email varchar(30)  NOT NULL,
+    start_date date  NOT NULL,
+    number_of_days int  NOT NULL,
+    creation_time timestamp,
+    update_time timestamp
+);

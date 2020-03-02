@@ -1,8 +1,10 @@
 package com.example.upgrade.campsite.api.v1.controllers;
 
+import com.example.upgrade.campsite.domain.service.ReservationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class ReservationControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @MockBean
+    private ReservationService reservationService;
 
     @Test
     public void getReservations() throws Exception {

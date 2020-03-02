@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.List;
+
 @Api(value = "reservations", description = "the reservations API")
 public interface ReservationsApi {
 
@@ -50,7 +52,7 @@ public interface ReservationsApi {
     @RequestMapping(value = "/reservations",
         produces = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<Reservation> getReservations();
+    ResponseEntity<List<Reservation>> getReservations();
 
 
     @ApiOperation(value = "Modifies a reservation.", nickname = "modifyReservation", notes = "Modifies a reservation.", response = Reservation.class, tags={  })

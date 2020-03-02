@@ -212,17 +212,16 @@ definitions:
         type: string
         format: date
         example: yyyy-MM-dd
-      departureDate:
-        description: Client's departure date
-        type: string
-        format: date
-        example: yyyy-MM-dd
+      numberOfDays:
+        description: Number of days
+        type: integer
+        format: int16
     required:
       - id
       - fullname
       - email
       - arrivalDate
-      - departureDate
+      - numberOfDays
   Error:
     type: object
     properties:
