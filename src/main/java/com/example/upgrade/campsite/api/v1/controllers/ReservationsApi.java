@@ -63,7 +63,8 @@ public interface ReservationsApi {
     @RequestMapping(value = "/reservations/{id}",
         produces = { "application/json" },
         method = RequestMethod.PATCH)
-    ResponseEntity<Reservation> modifyReservation(@ApiParam(value = "Reservation Id",required=true) @PathVariable("id") String id);
+    ResponseEntity<Reservation> modifyReservation(@ApiParam(value = "Reservation Id",required=true) @PathVariable("id") String id,
+                                                  @RequestBody Reservation partialUpdate);
 
 
     @ApiOperation(value = "Creates a reservation.", nickname = "saveReservation", notes = "", response = Reservation.class, tags={  })

@@ -7,8 +7,8 @@ import com.example.upgrade.campsite.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -23,18 +23,32 @@ public class ReservationService {
         this.reservationMapper = reservationMapper;
     }
 
+    public Reservation getReservations(String id) {
+        Optional<ReservationDTO> reservationDTO = reservationRepository.findById(Long.valueOf(id));
+        if(reservationDTO.isPresent()){
+            return reservationMapper.reservationDTOtoReservation(reservationDTO.get());
+        } else {
+            return null; //TODO: throw exception
+        }
+    }
+
     public List<Reservation> getReservations() {
         List<ReservationDTO> reservationDTOList = reservationRepository.findAll();
         return reservationMapper.reservationDTOsToReservations(reservationDTOList);
     }
 
-    public Reservation saveReservations() {
-        ReservationDTO reservation = new ReservationDTO();
-        reservation.setUserName("Rowena Dsouza");
-        reservation.setEmail("rocknrowe@gmail.com");
-        reservation.setStartDate(LocalDate.now());
-        reservation.setNumberOfDays(3);
-        ReservationDTO savedReservation = reservationRepository.save(reservation);
+    public Reservation saveReservations(Reservation reservation) {
+        ReservationDTO savedReservation = reservationRepository.save(reservationMapper.reservationToReservationDTO(reservation));
+        return reservationMapper.reservationDTOtoReservation(savedReservation);
+    }
+
+    public boolean deleteReservations(String id) {
+        reservationRepository.deleteById(Long.valueOf(id));
+        return true;
+    }
+
+    public Reservation updateReservations(String id, Reservation reservation) {
+        ReservationDTO savedReservation = reservationRepository.save(reservationMapper.reservationToReservationDTO(reservation));
         return reservationMapper.reservationDTOtoReservation(savedReservation);
     }
 }

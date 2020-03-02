@@ -2,6 +2,7 @@ package com.example.upgrade.campsite.api.v1.controllers;
 
 import com.example.upgrade.campsite.domain.service.ReservationService;
 import com.example.upgrade.campsite.model.Reservation;
+import org.apache.http.HttpResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,12 +22,13 @@ public class ReservationsController implements ReservationsApi {
 
     @Override
     public ResponseEntity<Void> deleteReservation(String id) {
-        return null;
+        reservationService.deleteReservations(id);
+        return ResponseEntity.ok(null);
     }
 
     @Override
     public ResponseEntity<Reservation> getReservation(String id) {
-        return null;
+        return ResponseEntity.ok(reservationService.getReservations(id));
     }
 
     @Override
@@ -35,12 +37,12 @@ public class ReservationsController implements ReservationsApi {
     }
 
     @Override
-    public ResponseEntity<Reservation> modifyReservation(String id) {
-        return null;
+    public ResponseEntity<Reservation> modifyReservation(String id, Reservation partialUpdate) {
+        return ResponseEntity.ok(reservationService.updateReservations(id, partialUpdate));
     }
 
     @Override
     public ResponseEntity<Reservation> saveReservation(@Valid Reservation body) {
-        return ResponseEntity.ok(reservationService.saveReservations());
+        return ResponseEntity.ok(reservationService.saveReservations(body));
     }
 }

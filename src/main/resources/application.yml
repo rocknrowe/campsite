@@ -15,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: campsite
         hbm2ddl:
-          auto: none
+          auto: update
         jdbc:
           lob:
             non_contextual_creation: true
