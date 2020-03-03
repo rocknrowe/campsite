@@ -6,6 +6,7 @@ import com.example.upgrade.campsite.domain.repository.ReservationRepository;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -44,8 +45,12 @@ public class AvailabilityService {
      * @return the boolean
      */
     public boolean isAvailable(final LocalDate startDate, final LocalDate endDate){
-        //Optional<List<ReservationDTO>> existingReservationDuringSelectionDays = reservationRepository.findEntriesGreaterEqualStartDateAndLessEqualEndDate(startDate, endDate);
-        return true;
+
+        List<LocalDate> availableDates = getAvailabilities(startDate, endDate);
+        List<LocalDate> localDates = getDatesBetweenTwoDates(startDate, endDate);
+
+        boolean allDatesavailable = localDates.stream().allMatch( d -> availableDates.contains(d));
+        return allDatesavailable;
     }
 
     /**
