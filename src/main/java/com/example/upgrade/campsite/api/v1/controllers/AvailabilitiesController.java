@@ -37,5 +37,4 @@ public class AvailabilitiesController {
         return ResponseEntity.ok(availabilityService.getAvailabilities(LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE),
                 LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE)));
     }
-
 }
