@@ -3,6 +3,7 @@ package com.example.upgrade.campsite.domain.service;
 import com.example.upgrade.campsite.domain.entity.ReservationDTO;
 import com.example.upgrade.campsite.domain.exceptions.DatesUnavailableException;
 import com.example.upgrade.campsite.domain.exceptions.ReservationDatesInvalidException;
+import com.example.upgrade.campsite.domain.exceptions.ReservationNotFoundException;
 import com.example.upgrade.campsite.domain.mapper.ReservationMapper;
 import com.example.upgrade.campsite.domain.repository.ReservationRepository;
 import com.example.upgrade.campsite.model.Reservation;
@@ -53,7 +54,7 @@ public class ReservationService {
         if(reservationDTO.isPresent()){
             return reservationMapper.reservationDTOtoReservation(reservationDTO.get());
         } else {
-            return null; //TODO: throw exception
+            throw new ReservationNotFoundException();
         }
     }
 
@@ -74,6 +75,11 @@ public class ReservationService {
      * @return the reservation
      */
     public Reservation saveReservations(final Reservation reservation) {
+
+        if(!isValidReservation(reservation)){
+            throw new ReservationDatesInvalidException();
+        }
+
         ReservationDTO savedReservation = saveReservation(reservationMapper.reservationToReservationDTO(reservation));
         return reservationMapper.reservationDTOtoReservation(savedReservation);
     }
