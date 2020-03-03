@@ -2,7 +2,6 @@ package com.example.upgrade.campsite.api.v1.controllers;
 
 import com.example.upgrade.campsite.domain.service.ReservationService;
 import com.example.upgrade.campsite.model.Reservation;
-import org.apache.http.HttpResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,12 +9,23 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * The type Reservations controller.
+ */
 @RestController
 @RequestMapping("api/campsite/v1")
 public class ReservationsController implements ReservationsApi {
 
+    /**
+     * The Reservation service.
+     */
     ReservationService reservationService;
 
+    /**
+     * Instantiates a new Reservations controller.
+     *
+     * @param reservationService the reservation service
+     */
     public ReservationsController(final ReservationService reservationService){
         this.reservationService = reservationService;
     }

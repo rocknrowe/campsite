@@ -4,7 +4,6 @@ import com.example.upgrade.campsite.domain.entity.ReservationDTO;
 import com.example.upgrade.campsite.domain.mapper.ReservationMapper;
 import com.example.upgrade.campsite.domain.repository.ReservationRepository;
 import com.google.common.collect.Lists;
-import org.codehaus.plexus.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * The type Availability service.
+ */
 @Service
 public class AvailabilityService {
 
@@ -22,18 +24,37 @@ public class AvailabilityService {
     private ReservationMapper reservationMapper;
 
 
+    /**
+     * Instantiates a new Availability service.
+     *
+     * @param reservationRepository the reservation repository
+     * @param reservationMapper     the reservation mapper
+     */
     @Autowired
     public AvailabilityService(final ReservationRepository reservationRepository,
                                final ReservationMapper reservationMapper) {
         this.reservationRepository = reservationRepository;
     }
 
+    /**
+     * Is available boolean.
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the boolean
+     */
     public boolean isAvailable(final LocalDate startDate, final LocalDate endDate){
         //Optional<List<ReservationDTO>> existingReservationDuringSelectionDays = reservationRepository.findEntriesGreaterEqualStartDateAndLessEqualEndDate(startDate, endDate);
         return true;
     }
 
-    //This function is used to get the availabilities
+    /**
+     * This function is used to get the availabilities
+     *
+     * @param startDate start date for the search
+     * @param endDate   end date for the search
+     * @return list
+     */
     public List<LocalDate> getAvailabilities(final LocalDate startDate, final LocalDate endDate){
 
         List<LocalDate> listOfDates = getDatesBetweenTwoDates(startDate, endDate);
