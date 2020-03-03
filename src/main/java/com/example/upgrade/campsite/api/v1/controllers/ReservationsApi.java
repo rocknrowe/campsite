@@ -60,6 +60,7 @@ public interface ReservationsApi {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Modification succesfull", response = Reservation.class),
         @ApiResponse(code = 400, message = "Bad Request", response = Error.class),
+        @ApiResponse(code = 409, message = "Could not save, conflict with existing resource", response = Error.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
     @RequestMapping(value = "/reservations/{id}",
         produces = { "application/json" },
@@ -72,7 +73,8 @@ public interface ReservationsApi {
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Creation succesfull", response = Reservation.class),
         @ApiResponse(code = 400, message = "Bad Request", response = Error.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+        @ApiResponse(code = 409, message = "Could not save, conflict with existing resource", response = Error.class),
+        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class)})
     @RequestMapping(value = "/reservations",
         produces = { "application/json" },
         consumes = { "application/json" },

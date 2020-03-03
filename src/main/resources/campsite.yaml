@@ -90,6 +90,11 @@ paths:
           schema:
             items:
               $ref: '#/definitions/Error'
+        '409':    # status code
+          description: Could not save. Conflict with existing resource.
+          schema:
+            items:
+              $ref: '#/definitions/Error'
 
         '500':    # status code
           description: Internal Server Error
