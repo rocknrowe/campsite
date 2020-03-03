@@ -14,12 +14,14 @@ public interface ReservationMapper {
     @Mappings({
             @Mapping(target="fullname", source="userName"),
             @Mapping(target="arrivalDate", source="startDate"),
+            @Mapping(target="departureDate", source="endDate"),
     })
     Reservation reservationDTOtoReservation(ReservationDTO dto);
 
     @Mappings({
             @Mapping(target="userName", source="fullname"),
             @Mapping(target="startDate", source="arrivalDate"),
+            @Mapping(target="endDate", source="departureDate"),
     })
     ReservationDTO reservationToReservationDTO(Reservation reservation);
 

@@ -212,6 +212,11 @@ definitions:
         type: string
         format: date
         example: yyyy-MM-dd
+      departureDate:
+        description: Client's departure date
+        type: string
+        format: date
+        example: yyyy-MM-dd
       numberOfDays:
         description: Number of days
         type: integer
