@@ -2,6 +2,7 @@ package com.example.upgrade.campsite.domain.service;
 
 import com.example.upgrade.campsite.domain.entity.ReservationDTO;
 import com.example.upgrade.campsite.domain.exceptions.DatesUnavailableException;
+import com.example.upgrade.campsite.domain.exceptions.ReservationDatesInvalidException;
 import com.example.upgrade.campsite.domain.mapper.ReservationMapper;
 import com.example.upgrade.campsite.domain.repository.ReservationRepository;
 import com.example.upgrade.campsite.model.Reservation;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +25,6 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
     private ReservationMapper reservationMapper;
     private AvailabilityService availabilityService;
-
-    private int sum;
 
     /**
      * Instantiates a new Reservation service.
@@ -47,7 +48,7 @@ public class ReservationService {
      * @param id the id
      * @return the reservations
      */
-    public Reservation getReservations(String id) {
+    public Reservation getReservations(final String id) {
         Optional<ReservationDTO> reservationDTO = reservationRepository.findById(Long.valueOf(id));
         if(reservationDTO.isPresent()){
             return reservationMapper.reservationDTOtoReservation(reservationDTO.get());
@@ -72,7 +73,7 @@ public class ReservationService {
      * @param reservation the reservation
      * @return the reservation
      */
-    public Reservation saveReservations(Reservation reservation) {
+    public Reservation saveReservations(final Reservation reservation) {
         ReservationDTO savedReservation = saveReservation(reservationMapper.reservationToReservationDTO(reservation));
         return reservationMapper.reservationDTOtoReservation(savedReservation);
     }
@@ -83,7 +84,7 @@ public class ReservationService {
      * @param id the id
      * @return the boolean
      */
-    public boolean deleteReservations(String id) {
+    public boolean deleteReservations(final String id) {
         reservationRepository.deleteById(Long.valueOf(id));
         return true;
     }
@@ -94,9 +95,32 @@ public class ReservationService {
      * @param reservation the reservation
      * @return the reservation
      */
-    public Reservation updateReservations(Reservation reservation) {
+    public Reservation updateReservations(final Reservation reservation) {
+
+        if(!isValidReservation(reservation)){
+            throw new ReservationDatesInvalidException();
+        }
+
         ReservationDTO savedReservation = saveReservation(reservationMapper.reservationToReservationDTO(reservation));
         return reservationMapper.reservationDTOtoReservation(savedReservation);
+    }
+
+    protected boolean isValidReservation(final Reservation reservation){
+
+        LocalDate today = LocalDate.now();
+        LocalDate oneMonthFromToday = LocalDate.now().plusMonths(1);
+
+        LocalDate arrivalDate = reservation.getArrivalDate();
+        LocalDate departureDate = reservation.getDepartureDate();
+
+        long numOfDaysBetween = ChronoUnit.DAYS.between(arrivalDate, departureDate.plusDays(1));
+
+        if(arrivalDate.isAfter(today) && arrivalDate.isBefore(oneMonthFromToday) &&
+                (departureDate.equals(arrivalDate) || departureDate.isAfter(arrivalDate)) &&
+                (numOfDaysBetween >=1 && numOfDaysBetween < 3)){
+            return true;
+        }
+        return false;
     }
 
 //    protected ReservationDTO validateAndSaveReservation(final Reservation reservation){
