@@ -38,7 +38,7 @@ public class ReservationsController implements ReservationsApi {
 
     @Override
     public ResponseEntity<Reservation> modifyReservation(String id, Reservation partialUpdate) {
-        return ResponseEntity.ok(reservationService.updateReservations(id, partialUpdate));
+        return ResponseEntity.ok(reservationService.updateReservations(partialUpdate));
     }
 
     @Override
