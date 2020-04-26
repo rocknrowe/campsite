@@ -9,6 +9,7 @@ import com.example.upgrade.campsite.domain.repository.ReservationRepository;
 import com.example.upgrade.campsite.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -160,6 +161,7 @@ public class ReservationService {
             if (availabilityService.isAvailable(reservationToSave.getStartDate(), reservationToSave.getEndDate())){
                 savedReservation = reservationRepository.save(reservationToSave);
             } else {
+                System.out.println("Reservation not available");
                 throw new DatesUnavailableException("Reservation dates not available");
             }
             return savedReservation;
@@ -180,4 +182,25 @@ public class ReservationService {
         }
         return Collections.emptyList();
     }
+
+    public String reverseOddWord(String stringToCheck){
+
+        if(StringUtils.isEmpty(stringToCheck)){
+            return "";
+        }
+
+        StringBuilder returnString = new StringBuilder();
+
+        String[] words = org.apache.commons.lang3.StringUtils.split(stringToCheck, " ");
+        for(String w: words){
+            String processedWord = w;
+            if(w.length() % 2 != 0){
+                processedWord = org.apache.commons.lang3.StringUtils.reverse(w);
+            }
+            returnString.append(processedWord);
+        }
+
+        return returnString.toString();
+    }
+
 }

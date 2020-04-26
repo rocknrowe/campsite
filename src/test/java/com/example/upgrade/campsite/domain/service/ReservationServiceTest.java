@@ -3,6 +3,7 @@ package com.example.upgrade.campsite.domain.service;
 import com.example.upgrade.campsite.domain.entity.ReservationDTO;
 import com.example.upgrade.campsite.domain.mapper.ReservationMapper;
 import com.example.upgrade.campsite.domain.repository.ReservationRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,22 @@ class ReservationServiceTest {
 
     @Nested
     public class TestGetReservations{
+
+        @Test
+        public void givenEmptyString(){
+            Assertions.assertEquals("", reservationService.reverseOddWord(""));
+        }
+
+        @Test
+        public void givenNull(){
+            Assertions.assertEquals("", reservationService.reverseOddWord(null));
+        }
+
+        @Test
+        public void givenStringOneODD() {
+            Assertions.assertEquals("ith hand", reservationService.reverseOddWord("thi hand"));
+        }
+
 
     }
 
@@ -60,6 +77,10 @@ class ReservationServiceTest {
             Mockito.when(reservationRepository.save(Mockito.refEq(reservationDTO1))).thenReturn(reservationDTORet1);
             Mockito.when(reservationRepository.save(Mockito.refEq(reservationDTO1))).thenReturn(reservationDTORet2);
             Mockito.when(reservationRepository.save(Mockito.refEq(reservationDTO1))).thenReturn(reservationDTORet3);
+
+            Mockito.when(availabilityService.isAvailable(Mockito.any(), Mockito.any())).thenReturn(true).thenReturn(false);
+
+
         }
 
         @Test
@@ -78,8 +99,8 @@ class ReservationServiceTest {
             Callable callableTask3 = () -> {
                 return reservationService.saveReservation(reservationDTO3);
             };
-            System.out.println(service.submit(callableTask2));
             System.out.println(service.submit(callableTask1));
+            System.out.println(service.submit(callableTask2));
             System.out.println(service.submit(callableTask3));
             System.out.println(service.submit(callableTask2));
             System.out.println(service.submit(callableTask3));
