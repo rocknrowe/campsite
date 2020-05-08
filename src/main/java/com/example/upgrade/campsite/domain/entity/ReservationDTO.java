@@ -20,8 +20,9 @@ import java.util.Objects;
 public class ReservationDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name="sequenceGenerator")
+//    @Column(columnDefinition = "serial")
     private Long id;
 
     @Column(name = "user_name", updatable = true, nullable = false)
